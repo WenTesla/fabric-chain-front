@@ -1,20 +1,13 @@
-import { createApp } from "vue";
-import App from "./App.vue";
+// main.ts
+import { createApp } from 'vue'
+import ElementPlus from 'element-plus'
+import 'element-plus/dist/index.css'
+import App from './App.vue'
+import route from "~/route";
 
-// import "~/styles/element/index.scss";
+const app = createApp(App)
 
-// import ElementPlus from "element-plus";
-// import all element css, uncommented next line
-// import "element-plus/dist/index.css";
+app.use(ElementPlus)
+app.use(route)
 
-// or use cdn, uncomment cdn link in `index.html`
-
-import "~/styles/index.scss";
-import "uno.css";
-
-// If you want to use ElMessage, import it.
-import "element-plus/theme-chalk/src/message.scss";
-
-const app = createApp(App);
-// app.use(ElementPlus);
-app.mount("#app");
+app.mount('#app')
