@@ -24,5 +24,38 @@ export function registerIntermediateCert(data) {
     return axios.post<BaseResponse>(BasePath+"/cert/registerIntermediateCert",data)
 }
 
+export function requestCert(data){
+    return axios.post<BaseResponse>(BasePath+"/cert/registerCert",data)
+}
 
+export function LeafCertsInfo() {
+    return axios.post<Certs>(BasePath+"/cert/allCert")
+}
 
+// 验证证书
+export function VerityCert(data){
+    return axios.post<BaseResponse>(BasePath+"/chain/verity",data)
+}
+
+// 批准
+export function ApproveCert(data){
+    return axios.post<BaseResponse>(BasePath+"/cert/approve",data)
+}
+
+export function RevokeCert(data){
+    return axios.post<BaseResponse>(BasePath+"/cert/revoke",data)
+}
+
+export function DeleteCert(data){
+    return axios.post<BaseResponse>(BasePath+"/cert/delete",data)
+}
+
+// 用户自己的cert
+export function MyCert(data){
+    return axios.post<Certs>(BasePath+"/cert/myCert",data)
+}
+
+// 下载
+export function DownCert(data){
+    return axios.post<BaseResponse>(BasePath+"/cert/myCert",data)
+}

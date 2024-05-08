@@ -11,18 +11,18 @@
         style="max-width: 400px"
     >
       <Input :send-id="getId" :send-password="getPassword"/>
-      <el-form-item label="Sign">
-<!--        <upload/>-->
+<!--      <el-form-item label="Sign">-->
+<!--&lt;!&ndash;        <upload/>&ndash;&gt;-->
 
-      </el-form-item>
+<!--      </el-form-item>-->
       <el-form-item>
         <el-button type="primary" @click="handleSubmit"
-                   :loading="isLoading"
+                   :loading="isLoading" style="margin: auto"
         >Login
         </el-button>
       </el-form-item>
     </el-form>
-    {{ form }}
+<!--    {{ form }}-->
   </div>
 </template>
 
@@ -30,8 +30,10 @@
 import {reactive, ref} from 'vue'
 import type {FormProps} from 'element-plus'
 import upload from '../components/upload.vue'
-import {Login, LoginData} from "~/api/user";
+import {Login, LoginData, UserRole} from "~/api/user";
 import {ElMessage} from "element-plus";
+import router from "~/route";
+import {successMsg} from "~/components/base_component.vue";
 
 const labelPosition = ref<FormProps['labelPosition']>('right')
 const isLoading = ref(false)
@@ -60,7 +62,6 @@ const handleSubmit = async () => {
   await loginWithFormData(formData)
   console.log("submit")
   isLoading.value=false
-
 }
 
 async function loginWithFormData(formData) {
@@ -78,6 +79,11 @@ function handleResponse(response) {
   if (response.status === 200) {
     successMsg(response.data.status_msg);
     isLoading.value=false
+    // 获取用户角色
+    setRole()
+    // 存放cookie
+    sessionStorage.setItem('id',form.id);
+    router.push("/back")
   } else {
     errorMsg(response.data);
     isLoading.value=false
@@ -109,12 +115,15 @@ const success = () => {
     type: 'success',
   })
 }
-const successMsg = (msg) => {
-  ElMessage({
-    message: msg,
-    type: 'success',
-    grouping: true
-  })
+// 设置用户
+async function setRole() {
+  let formData = new FormData;
+  formData.append("id", form.id)
+  let response = await UserRole(formData);
+  if (response.status === 200)
+  {
+    sessionStorage.setItem("role",response.data.data)
+  }
 }
 </script>
 

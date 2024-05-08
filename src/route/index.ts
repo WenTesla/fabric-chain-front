@@ -6,8 +6,11 @@ import user_manage from '../view/user_manage.vue'
 import cert from "~/view/cert.vue";
 import csr from "~/view/csr.vue";
 import interCert from "~/view/interCert.vue";
-import {apply} from "axios";
-import apply_cert from "~/view/apply_cert.vue";
+import apply_cert from "~/view/apply-cert.vue";
+import apply_inter_cert from "~/view/apply-inter-cert.vue"
+import verity_cert from "~/view/verity-cert.vue"
+import back from "~/view/back.vue";
+import my_cert from "~/view/my-cert.vue";
 
 const routerHistory = createWebHistory()
 
@@ -54,8 +57,24 @@ const router = createRouter({
             component: cert
         },
         {
-            path:'/apply_cert',
+            path: '/apply_cert',
             component: apply_cert
+        },
+        {
+            path: '/apply_inter',
+            component: apply_inter_cert
+        },
+        {
+            path: '/verity_cert',
+            component: verity_cert
+        },
+        {
+            path: '/back',
+            component: back
+        },
+        {
+            path: '/my_cert',
+            component: my_cert
         }
         // {
         //     path: '*',

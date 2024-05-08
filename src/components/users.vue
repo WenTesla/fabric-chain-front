@@ -52,6 +52,21 @@
       {{ dialogContent }}
     </span>
   </el-dialog>
+  <el-dialog
+      v-model="dialogVisible"
+      title="Are you sure"
+      width="500"
+  >
+    <span>Will delete it forever</span>
+    <template #footer>
+      <div class="dialog-footer">
+        <el-button @click="dialogVisible = false">Cancel</el-button>
+        <el-button type="primary" @click="ConfirmDelete">
+          Confirm
+        </el-button>
+      </div>
+    </template>
+  </el-dialog>
 </template>
 
 <script lang="ts" setup>
@@ -62,11 +77,12 @@ import {BanUser, DegradeUser, DeleteUser, UnBanUser, UpgradeUser, UserInfo} from
 import {ElMessage, ElMessageBox} from "element-plus";
 import router from "~/route";
 import {Delete, Lock, Unlock, Top, Bottom} from "@element-plus/icons-vue";
-
+const dialogVisible = ref(false)
 const loading = ref(true)
 const centerDialogVisible = ref(false)
 const tableData = ref([]); // 创建一个响应式引用，用于存储表格数据
 const dialogContent = ref("")
+const confirmCertId = ref()
 // 定义要在组件挂载后调用的函数
 const getUsersInfo = async () => {
   console.log('组件已挂载，函数被自动调用');
@@ -102,7 +118,7 @@ const getUsersInfo = async () => {
     }
 
   } catch (error) {
-    errorMsg(error)
+    errorMsg(error.response.data.status_msg)
   }
 
 };
@@ -197,11 +213,13 @@ const keyDetail = (data) => {
   dialogContent.value = data
 }
 
-const deleteUser = async (id) => {
-  console.log(id)
-
+const deleteUser =  (id) => {
+  dialogVisible.value = true
+  confirmCertId.value = id
+}
+async function ConfirmDelete() {
   try {
-    const response = await DeleteUser(id)
+    const response = await DeleteUser(confirmCertId.value)
     if (response.status == 200) {
       SuccessMsg("success")
       // 刷新页面
@@ -214,7 +232,6 @@ const deleteUser = async (id) => {
   }
 }
 
-
 const errorMsg = (msg) => {
   ElMessage({
     message: msg,
@@ -222,11 +239,6 @@ const errorMsg = (msg) => {
     // duration: 0,
     showClose: true,
     grouping: true
-  })
-}
-const Msg = (msg) => {
-  ElMessage({
-    message: msg,
   })
 }
 

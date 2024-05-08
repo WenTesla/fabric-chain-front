@@ -1,60 +1,47 @@
 <template>
-  <el-radio-group v-model="isCollapse" style="margin-bottom: 20px">
-    <el-radio-button :value="false">expand</el-radio-button>
-    <el-radio-button :value="true">collapse</el-radio-button>
-  </el-radio-group>
+
   <el-menu
-      default-active="2"
       class="el-menu-vertical-demo"
       :collapse="isCollapse"
       @open="handleOpen"
       @close="handleClose"
       router
   >
-    <el-menu-item index="1" route="/user">
-      <el-icon>
-        <User/>
-      </el-icon>
-      <template #title>User</template>
+    <el-menu-item index="1" route="/user" v-if="role === '2' ">
+      User
     </el-menu-item>
-    <el-sub-menu index="2">
-      <template #title>
-        <el-icon><location /></el-icon>
-        <span>Navigator One</span>
-      </template>
-      <el-menu-item-group>
-        <template #title><span>Cert</span></template>
-        <el-menu-item index="1-1" route="/interCert">intermediate-cert</el-menu-item>
-        <el-menu-item index="1-2" route="/csr">apply intermediate-cert</el-menu-item>
-        <el-menu-item index="1-3" route="/cert">leaf-cert</el-menu-item>
-        <el-menu-item index="1-4" route="/cert">apply leaf-cert</el-menu-item>
-      </el-menu-item-group>
-
-    </el-sub-menu>
-    <el-menu-item index="3" route="/csr">
-
-      <template #title>CSR</template>
+    <el-menu-item index="2" route="/interCert" v-if="role === '2'">Intermediate-cert</el-menu-item>
+    <el-menu-item index="4" route="/cert" v-if="role === '2'">Leaf-cert</el-menu-item>
+    <el-menu-item index="3" route="/apply_inter" v-if="role ===  '1'|| '2'" >Apply intermediate-cert</el-menu-item>
+    <el-menu-item index="5" route="/apply_cert">Apply leaf-cert</el-menu-item>
+    <el-menu-item index="6" route="/csr">
+      Create Csr
     </el-menu-item>
-    <el-menu-item index="4" route="/csr">
-
-      <template #title>Cert Verify</template>
+    <el-menu-item index="7" route="/verity_cert">
+      Cert Verify
     </el-menu-item>
+    <el-menu-item index="8" route="/my_cert">
+      My cert
+    </el-menu-item>
+    {{ role }}
   </el-menu>
 </template>
 
 <script lang="ts" setup>
-import {ref} from 'vue'
-import {
-  User
-} from '@element-plus/icons-vue'
+import {onMounted, ref} from 'vue'
 
-const isCollapse = ref(true)
+
+const isCollapse = ref(false)
 const handleOpen = (key: string, keyPath: string[]) => {
   console.log(key, keyPath)
 }
 const handleClose = (key: string, keyPath: string[]) => {
   console.log(key, keyPath)
 }
+// 调取用户权限
+const role = ref(sessionStorage.getItem("role"))
+
+
 </script>
 
 <style>

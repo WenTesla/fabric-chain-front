@@ -41,7 +41,7 @@
     </el-form-item>
     <el-form-item>
       <el-button type="primary" @click="submit" :loading="isLoading">Create CSR</el-button>
-      <el-button @click="">Reset</el-button>
+      <el-button @click="clearForm">Reset</el-button>
     </el-form-item>
 
     {{ form }}
@@ -52,6 +52,7 @@
 import {reactive,ref} from 'vue'
 import {CreateCsr} from "~/api/cert";
 import {ElMessage} from "element-plus";
+import {errorMsg, successMsg} from "~/components/base_component.vue";
 
 const  isLoading = ref(false)
 
@@ -66,6 +67,14 @@ const form = reactive({
   EmailAddress: '',
   DnsEmail: '',
 })
+// 定义一个方法来清空form对象
+function clearForm() {
+  for (const key in form) {
+    if (form.hasOwnProperty(key)) {
+      form[key] = ''; // 将每个属性的值设置为空字符串
+    }
+  }
+}
 
 const submit = async () => {
   isLoading.value=true
@@ -108,22 +117,7 @@ const handleFileUpload = (file, fileList) => {
   reader.readAsText(selectedFile.value); // 假设你想以文本形式读取文件
   // 设置
 }
-const successMsg = (msg) => {
-  ElMessage({
-    message: msg,
-    type: 'success',
-    grouping: true
-  })
-}
-const errorMsg = (msg) => {
-  ElMessage({
-    message: msg,
-    type: "error",
-    // duration: 0,
-    showClose: true,
-    grouping: true
-  })
-}
+
 
 function down(data) {
   let blob = stringToBlob(data);

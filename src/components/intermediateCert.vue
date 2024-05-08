@@ -1,9 +1,9 @@
 <template>
-  switch parent border:
-  <el-switch v-model="parentBorder"/>
-  switch child
-  border:
-  <el-switch v-model="childBorder"/>
+<!--  switch parent border:-->
+<!--  <el-switch v-model="parentBorder"/>-->
+<!--  switch child-->
+<!--  border:-->
+<!--  <el-switch v-model="childBorder"/>-->
   <el-table :data="tableData" :border="parentBorder" style="width: 100%">
     <el-table-column type="expand">
 

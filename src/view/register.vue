@@ -14,7 +14,7 @@
       <el-form-item label="Confirm">
         <el-input
             type="password"
-            placeholder="Please input Password"
+            placeholder="Please confirm Password"
             show-password
             clearable
             v-model="confirmValue"
@@ -28,8 +28,14 @@
         />
       </el-form-item>
       <el-form-item>
-        <el-switch v-model="isChecked"/>
-
+        <el-tooltip
+            class="box-item"
+            effect="dark"
+            content="upload your public key"
+            placement="left"
+        >
+          <el-switch v-model="isChecked" style="margin: auto"/>
+        </el-tooltip>
         <el-upload
             v-show="isChecked"
             :limit="1"
@@ -39,19 +45,18 @@
         >
           <el-button type="primary" @click="submitUpload">Click to upload</el-button>
           <div class="el-upload__tip">
-            please load your key
+            please load your public key
           </div>
         </el-upload>
 
       </el-form-item>
 
       <el-form-item>
-        <el-button type="primary" @click="handleSubmit" :loading="isLoading"
+        <el-button type="primary" @click="handleSubmit" :loading="isLoading" style="margin: auto"
         >register
         </el-button>
       </el-form-item>
-      {{ form }}
-      {{ isChecked }}
+
     </el-form>
   </div>
 </template>
@@ -64,6 +69,8 @@ import {RegisterByGenRSA, RegisterData, RegisterWithCert} from "~/api/user";
 import {ElMessage, ElMessageBox, genFileId} from 'element-plus'
 import Input from "~/components/input.vue";
 import Menu from "~/components/menu.vue";
+import {downName} from "~/components/base_component.vue";
+import router from "~/route";
 
 
 const labelPosition = ref<FormProps['labelPosition']>('right')
@@ -82,7 +89,9 @@ const selectedFile = ref();
 function checkIsSame() {
   if (confirmValue.value != form.password) {
     errorMsg("两次密码不正确")
+    return false
   }
+
 }
 
 const isChecked = ref(false)
@@ -91,6 +100,10 @@ const isChecked = ref(false)
 const handleSubmit = async () => {
   if (!form.id || !form.password) {
     errorMsg("请填写账号密码")
+    return
+  }
+  if (confirmValue.value != form.password) {
+    errorMsg("两次密码不正确")
     return
   }
   console.log(isChecked.value)
@@ -102,7 +115,6 @@ const handleSubmit = async () => {
     await handleSwitchOff()
   }
   isLoading.value = false
-
 }
 
 function getId(value: string) {
@@ -134,7 +146,7 @@ async function handleSwitchOn() {
     console.log(response)
     // 处理响应
     if (response.status == 200) {
-      successMsg(response.data)
+      successMsg(response.data.status_msg)
     } else {
       // 检查response是否有data属性
       if (response.data) {
@@ -166,10 +178,9 @@ async function handleSwitchOff() {
     console.log(response)
     // 处理响应
     if (response.status == 200) {
-      successMsg(response.data)
       // 下载文件
-      down(response.data)
-      // router.push("/login")
+      downName(response.data,form.id+'.txt')
+      router.push("/login")
     } else {
       errorMsg(response.data)
     }
@@ -236,25 +247,13 @@ const beforeUpload = (rawFile: File) => {
   return true;
 };
 
-function down(data) {
-  let blob = stringToBlob(data);
-  const url = URL.createObjectURL(blob);
-  const link = document.createElement('a');
-  link.href = url;
-  link.download = 'filename.txt'; // 设置下载文件的名称
-  link.click();
-
-  URL.revokeObjectURL(url);
-
-}
-
 function stringToBlob(str, type = 'text/plain;charset=utf-8') {
   const encoder = new TextEncoder(); // 创建一个 TextEncoder 实例
   const data = encoder.encode(str); // 将字符串编码为 Uint8Array
   return new Blob([data], {type}); // 创建一个 Blob 对象
 }
 
-const handleFileUpload = (file, fileList) => {
+const handleFileUpload = (file) => {
   // file 是当前选择的文件对象，fileList 是当前已选择的文件列表
   selectedFile.value = file.raw; // raw 属性包含了原始的 File 对象
   form.publickey=file.raw

@@ -3,8 +3,10 @@
     <user_menu></user_menu>
   </el-header>
   <el-container>
-    <el-aside width="200px"><collapse></collapse></el-aside>
-    <el-main><RegisterCert/></el-main>
+    <el-aside width="200px">
+      <collapse></collapse>
+    </el-aside>
+    <el-main></el-main>
   </el-container>
 </template>
 

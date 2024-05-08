@@ -93,3 +93,7 @@ export function DegradeUser(data){
     return axios.post<BaseResponse>(path + '/api/user/degrade', data)
 
 }
+
+export function UserRole(data){
+    return axios.post<BaseResponse>(path + '/api/user/role', data)
+}
