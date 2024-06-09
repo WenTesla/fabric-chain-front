@@ -1,20 +1,20 @@
 <template>
-  <el-table :data="tableData" style="width: 100%" v-loading.fullscreen.lock="loading">
+  <el-table :data="tableData" style="width: 100%" v-loading="loading">
     <el-table-column prop="Id" label="Id" width="120"/>
-    <el-table-column prop="email" label="Email" width="160"/>
-    <el-table-column prop="role" label="Role" width="120"/>
-    <el-table-column prop="createTime" label="CreateTime" width="160"/>
-    <el-table-column prop="updateTime" label="UpdateTime" width="160"/>
-    <el-table-column prop="lastLoginTime" label="lastLoginTime" width="160"/>
-    <el-table-column prop="status" label="Status" width="120"/>
-    <el-table-column prop="publicKey" label="key" width="100">
+    <el-table-column prop="email" label="邮箱" width="160"/>
+    <el-table-column prop="role" label="角色" width="120"/>
+    <el-table-column prop="createTime" label="创建时间" width="160"/>
+    <el-table-column prop="updateTime" label="修改时间" width="160"/>
+    <el-table-column prop="lastLoginTime" label="最后登录时间" width="160"/>
+    <el-table-column prop="status" label="状态" width="100"/>
+    <el-table-column prop="publicKey" label="公钥" width="100">
       <template #default="scope">
         <el-button link type="primary" size="small" @click="keyDetail(scope.row.publicKey)"
-        >Detail
+        >查看
         </el-button>
       </template>
     </el-table-column>
-    <el-table-column fixed="right" label="Operations" width="140">
+    <el-table-column fixed="right" label="操作" width="140">
       <template #default="scope">
         <!--        <el-button link type="primary" size="small" @click="handleClick(scope.row)"-->
         <!--        > {{ scope.row.status === "正常" ? 'Ban' : 'UnBan' }}-->

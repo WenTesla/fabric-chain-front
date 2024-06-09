@@ -8,22 +8,25 @@
       router
   >
     <el-menu-item index="1" route="/user" v-if="role === '2' ">
-      User
+      用户管理
     </el-menu-item>
-    <el-menu-item index="2" route="/interCert" v-if="role === '2'">Intermediate-cert</el-menu-item>
-    <el-menu-item index="4" route="/cert" v-if="role === '2'">Leaf-cert</el-menu-item>
-    <el-menu-item index="3" route="/apply_inter" v-if="role ===  '1'|| '2'" >Apply intermediate-cert</el-menu-item>
-    <el-menu-item index="5" route="/apply_cert">Apply leaf-cert</el-menu-item>
+    <el-menu-item index="2" route="/interCert" v-if="(role === '1') || (role === '2')">查看中间证书</el-menu-item>
+    <el-menu-item index="4" route="/cert" v-if="role === '2'">终端证书</el-menu-item>
+    <el-menu-item index="3" route="/apply_inter" v-if="(role === '1') || (role === '2')">申请中间证书</el-menu-item>
+    <el-menu-item index="5" route="/apply_cert">申请终端证书</el-menu-item>
     <el-menu-item index="6" route="/csr">
-      Create Csr
+      创建CSR请求
     </el-menu-item>
     <el-menu-item index="7" route="/verity_cert">
-      Cert Verify
+      验证证书
     </el-menu-item>
     <el-menu-item index="8" route="/my_cert">
-      My cert
+      我申请的证书
     </el-menu-item>
-    {{ role }}
+    <el-menu-item index="9" route="/key">
+      生成RSA密钥对
+    </el-menu-item>
+<!--    {{ role }}-->
   </el-menu>
 </template>
 
@@ -46,7 +49,7 @@ const role = ref(sessionStorage.getItem("role"))
 
 <style>
 .el-menu-vertical-demo:not(.el-menu--collapse) {
-  width: 200px;
-  min-height: 400px;
+  width: 150px;
+  min-height: 150px;
 }
 </style>

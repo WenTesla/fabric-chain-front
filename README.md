@@ -2,8 +2,15 @@
 
 ~~~bash
 # 本地运行
-vite
+npm run dev
 ~~~
+
+
+
+此项目的后端项目地址
+https://github.com/WenTesla/fabric-chain
+
+
 
 
 

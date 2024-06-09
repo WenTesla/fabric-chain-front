@@ -11,6 +11,7 @@ import apply_inter_cert from "~/view/apply-inter-cert.vue"
 import verity_cert from "~/view/verity-cert.vue"
 import back from "~/view/back.vue";
 import my_cert from "~/view/my-cert.vue";
+import key from "~/view/key.vue";
 
 const routerHistory = createWebHistory()
 
@@ -75,6 +76,10 @@ const router = createRouter({
         {
             path: '/my_cert',
             component: my_cert
+        },
+        {
+            path:'/key',
+            component:key,
         }
         // {
         //     path: '*',

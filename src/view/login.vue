@@ -4,7 +4,10 @@
   </el-header>
 
   <div class="login-container">
-    <el-form
+    <div class="login-box">
+      <h2 style="text-align: center; margin-bottom: 20px;">欢迎登陆</h2>
+
+      <el-form
         :label-position="labelPosition"
         label-width="auto"
         :model="form"
@@ -18,10 +21,11 @@
       <el-form-item>
         <el-button type="primary" @click="handleSubmit"
                    :loading="isLoading" style="margin: auto"
-        >Login
+        >登录
         </el-button>
       </el-form-item>
     </el-form>
+    </div>
 <!--    {{ form }}-->
   </div>
 </template>
@@ -128,8 +132,21 @@ async function setRole() {
 </script>
 
 <style>
-.login-container {
-  padding-top: 100px;
-  text-align: -webkit-center;
+ .login-container {
+   background-image: url('https://s2.loli.net/2024/06/09/mgGv2hlHQIte7En.jpg');
+   background-size: cover;
+   background-position: center;
+   background-repeat: no-repeat;
+   min-height: 100vh;
+   padding-top: 100px;
+   text-align: -webkit-center;
+ }
+.login-box {
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  margin: 50px auto;
+  max-width: 500px;
 }
 </style>

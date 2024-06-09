@@ -1,4 +1,5 @@
 <template>
+  <div style="margin: auto">
   <el-form-item>
     <el-upload
         :limit="1"
@@ -6,22 +7,23 @@
         :auto-upload="false"
         @change="handleFileUpload"
     >
-      <el-button type="primary">Click to upload</el-button>
+      <el-button type="primary">上传文件</el-button>
       <div class="el-upload__tip">
-        please load your cert
+        请上传你的证书
       </div>
     </el-upload>
 
   </el-form-item>
   <el-form-item>
     <el-button type="primary" @click="submit" :loading="isLoading">
-      submit
+      验证
     </el-button>
   </el-form-item>
+  </div>
 </template>
 <script lang="ts" setup>
 import {VerityCert} from "~/api/cert";
-import {errorMsg, successMsg} from "~/components/base_component.vue";
+import {errorMsg, success, successMsg} from "~/components/base_component.vue";
 import {ref} from "vue";
 
 const selectedFile = ref();
@@ -35,7 +37,7 @@ async function submit() {
     const response = await VerityCert(formData);
     console.log(response)
     if (response.status == 200) {
-      successMsg(response.data.data)
+      success()
     } else {
       errorMsg(response.data.status_msg)
     }

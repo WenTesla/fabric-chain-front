@@ -59,3 +59,8 @@ export function MyCert(data){
 export function DownCert(data){
     return axios.post<BaseResponse>(BasePath+"/cert/myCert",data)
 }
+
+// 生成RSA密钥
+export function GenRSA(data){
+    return axios.post<BaseResponse>(BasePath+"/gen",data)
+}

@@ -12,6 +12,14 @@ export const successMsg = (msg) => {
     grouping: true
   })
 }
+
+export const success = () => {
+  ElMessage({
+    message: "success",
+    type: 'success',
+    grouping: true
+  })
+}
 export const errorMsg = (msg) => {
   ElMessage({
     message: msg,

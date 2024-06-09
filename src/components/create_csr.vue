@@ -1,60 +1,67 @@
 <template>
-  <el-form :model="form" label-width="auto" style="max-width: 400px">
-    <el-form-item label="C">
-      <el-input v-model="form.C"/>
+  <el-form :model="form" label-width="auto" style="max-width: 400px;margin: auto">
+    <el-form-item label="国家C">
+      <el-select v-model="form.C" placeholder="请选择所属国家">
+        <el-option
+            v-for="item in options"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value">
+        </el-option>
+      </el-select>
     </el-form-item>
-    <el-form-item label="ST">
-      <el-input v-model="form.ST"/>
+    <el-form-item label="省份ST">
+      <el-input v-model="form.ST" placeholder="省份"/>
     </el-form-item>
-    <el-form-item label="L">
-      <el-input v-model="form.L"/>
+    <el-form-item label="城市L *">
+      <el-input v-model="form.L" placeholder="市级地区，例如：武汉"/>
     </el-form-item>
-    <el-form-item label="O">
-      <el-input v-model="form.O"/>
+    <el-form-item label="组织O *">
+      <el-input v-model="form.O" placeholder="机构名称，例如：**科技有限公司"/>
     </el-form-item>
-    <el-form-item label="OU">
-      <el-input v-model="form.OU"/>
+    <el-form-item label="部门OU">
+      <el-input v-model="form.OU" placeholder="部门名称，例如：技术部"/>
     </el-form-item>
-    <el-form-item label="CN">
-      <el-input v-model="form.CN"/>
+    <el-form-item label="通用名CN *">
+      <el-input v-model="form.CN" placeholder="站点的域名，如www.xx.com"/>
+
     </el-form-item>
-    <el-form-item label="EmailAddress">
-      <el-input v-model="form.EmailAddress"/>
+    <el-form-item label="邮箱地址">
+      <el-input v-model="form.EmailAddress" placeholder="常用邮箱"/>
     </el-form-item>
     <el-form-item label="DnsEmail">
-      <el-input v-model="form.DnsEmail"/>
+      <el-input v-model="form.DnsEmail" placeholder="需要颁发证书的 DNS，也就是域名"/>
     </el-form-item>
-    <el-form-item label="pri">
-
+    <el-form-item label="私钥">
       <el-upload
           :limit="1"
           class="upload-demo"
           :auto-upload="false"
           @change="handleFileUpload"
       >
-        <el-button type="primary" >Click to upload</el-button>
+        <el-button type="primary">选择</el-button>
         <div class="el-upload__tip">
-          please load your key
+          请上传你的私钥
         </div>
       </el-upload>
 
     </el-form-item>
     <el-form-item>
-      <el-button type="primary" @click="submit" :loading="isLoading">Create CSR</el-button>
-      <el-button @click="clearForm">Reset</el-button>
+      <el-button type="primary" @click="submit" :loading="isLoading">创建</el-button>
+      <el-button @click="clearForm">重置</el-button>
     </el-form-item>
 
-    {{ form }}
+<!--    {{ form }}-->
   </el-form>
 </template>
 
 <script setup lang="ts">
-import {reactive,ref} from 'vue'
+import {reactive, ref} from 'vue'
 import {CreateCsr} from "~/api/cert";
 import {ElMessage} from "element-plus";
-import {errorMsg, successMsg} from "~/components/base_component.vue";
+import {downName, errorMsg, successMsg} from "~/components/base_component.vue";
 
-const  isLoading = ref(false)
+const isLoading = ref(false)
 
 const selectedFile = ref();
 const form = reactive({
@@ -67,6 +74,7 @@ const form = reactive({
   EmailAddress: '',
   DnsEmail: '',
 })
+
 // 定义一个方法来清空form对象
 function clearForm() {
   for (const key in form) {
@@ -77,7 +85,7 @@ function clearForm() {
 }
 
 const submit = async () => {
-  isLoading.value=true
+  isLoading.value = true
   console.log(form)
   try {
     let formData = new FormData;
@@ -94,14 +102,14 @@ const submit = async () => {
     console.log(response)
     if (response.status == 200) {
       successMsg("success")
-      down(response.data)
-    }else {
+      downName(response.data,"证书请求.csr")
+    } else {
       errorMsg(response.data.status_msg)
     }
   } catch (e) {
-      errorMsg(e)
+    errorMsg(e.response.data.status_msg)
   }
-  isLoading.value=false
+  isLoading.value = false
 }
 
 const handleFileUpload = (file, fileList) => {
@@ -136,6 +144,18 @@ function stringToBlob(str, type = 'text/plain;charset=utf-8') {
   const data = encoder.encode(str); // 将字符串编码为 Uint8Array
   return new Blob([data], {type}); // 创建一个 Blob 对象
 }
+
+
+// 定义选项列表
+const options = ref([
+  {value: 'CN', label: 'CN(中国)'},
+  {value: 'JP', label: 'JP(日本)'},
+  {value: 'MO', label: 'MO(中国-澳门)'},
+  {value: 'TW', label: 'TW(中国-台湾)'},
+  {value: 'HK', label: 'HK(中国-香港)'},
+  {value: 'PK', label: 'PK(巴基斯坦)'},
+  {value: 'US', label: 'US(美国)'},
+]);
 </script>
 
 <style scoped>

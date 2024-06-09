@@ -1,36 +1,42 @@
 <template>
-<!--  <el-input-->
-<!--      v-model="form.Id"-->
-<!--      style="width: 240px"-->
-<!--      placeholder="Please input"-->
-<!--      clearable-->
-<!--  />-->
-  <el-form-item>
-    <el-upload
-        :limit="1"
-        class="upload-demo"
-        :auto-upload="false"
-        @change="handleFileUpload1"
-    >
-      <el-button type="primary">Click to upload</el-button>
-      <div class="el-upload__tip">
-        please load your csr
-      </div>
-    </el-upload>
+  <!--  <el-input-->
+  <!--      v-model="form.Id"-->
+  <!--      style="width: 240px"-->
+  <!--      placeholder="Please input"-->
+  <!--      clearable-->
+  <!--  />-->
+  <div style="max-width: 400px;margin: auto  ;);
+">
 
-  </el-form-item>
-  <el-form-item>
-    <el-button type="primary" @click="submit" :loading="isLoading">
-      Upload
-    </el-button>
-  </el-form-item>
-  {{form}}
+    <el-form-item>
+      <el-upload
+          :limit="1"
+          class="upload-demo"
+          :auto-upload="false"
+          @change="handleFileUpload1"
+      >
+        <el-button type="primary">选择</el-button>
+        <div class="el-upload__tip">
+          上传CSR
+        </div>
+      </el-upload>
+
+    </el-form-item>
+
+    <el-form-item>
+      <el-button type="primary" @click="submit" :loading="isLoading">
+        上传
+      </el-button>
+    </el-form-item>
+    <!--    {{ form }}-->
+  </div>
+
 </template>
 
 <script setup lang="ts">
 import {reactive, ref} from "vue";
 import {CreateCsr, registerIntermediateCert, requestCert} from "~/api/cert";
-import {errorMsg,successMsg} from "./base_component.vue"
+import {errorMsg, successMsg} from "./base_component.vue"
 import {down} from "~/components/base_component.vue";
 
 const selectedFile = ref();
@@ -61,8 +67,8 @@ async function submit() {
   console.log(form)
   try {
     let formData = new FormData;
-    formData.append("csr",form.csr)
-    formData.append("userId",form.Id)
+    formData.append("csr", form.csr)
+    formData.append("userId", form.Id)
     const response = await requestCert(formData);
     console.log(response)
     if (response.status == 200) {
@@ -79,5 +85,9 @@ async function submit() {
 </script>
 
 <style scoped>
-
+.background-image {
+  background-image: url('https://s2.loli.net/2024/06/09/MtzIfwupasGRdJj.png');
+  background-size: cover;
+  background-position: center;
+}
 </style>

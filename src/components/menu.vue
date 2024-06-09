@@ -7,11 +7,11 @@
       router
   >
     <el-menu-item index="0" route="login">
-      fabric
+      PKI系统
     </el-menu-item>
     <div class="flex-grow"/>
-    <el-menu-item index="1" route="register">Register</el-menu-item>
-    <el-menu-item index="2" route="login">Login</el-menu-item>
+    <el-menu-item index="1" route="register">注册</el-menu-item>
+    <el-menu-item index="2" route="login">登录</el-menu-item>
   </el-menu>
 </template>
 

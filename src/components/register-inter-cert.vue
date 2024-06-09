@@ -1,4 +1,5 @@
 <template>
+  <div style="max-width: 400px;margin: auto">
   <el-form-item>
     <el-upload
         :limit="1"
@@ -6,41 +7,42 @@
         :auto-upload="false"
         @change="handleFileUpload1"
     >
-      <el-button type="primary">Click to upload</el-button>
-      <div class="el-upload__tip">
-        please load your csr
+      <el-button type="primary" >选择文件</el-button>
+      <div class="el-upload__tip" style="margin-left: 5px">
+        请上传CSR
       </div>
     </el-upload>
 
   </el-form-item>
 
-  <el-form-item>
-    <el-upload
-        :limit="1"
-        class="upload-demo"
-        :auto-upload="false"
-        @change="handleFileUpload2"
-    >
-      <el-button type="primary">Click to upload</el-button>
-      <div class="el-upload__tip">
-        please load your pub
-      </div>
-    </el-upload>
+<!--  <el-form-item>-->
+<!--    <el-upload-->
+<!--        :limit="1"-->
+<!--        class="upload-demo"-->
+<!--        :auto-upload="false"-->
+<!--        @change="handleFileUpload2"-->
+<!--    >-->
+<!--      <el-button type="primary">Click to upload</el-button>-->
+<!--      <div class="el-upload__tip">-->
+<!--        please load your pub-->
+<!--      </div>-->
+<!--    </el-upload>-->
 
-  </el-form-item>
+<!--  </el-form-item>-->
   <el-form-item>
     <el-button type="primary" @click="submit" :loading="isLoading">
-      Upload
+      上传
     </el-button>
   </el-form-item>
-  {{ form }}
+<!--  {{ form }}-->
+  </div>
 </template>
 
 <script setup lang="ts">
 import {reactive, ref} from "vue";
 import {CreateCsr, registerIntermediateCert} from "~/api/cert";
-import {errorMsg, successMsg} from "./base_component.vue"
-import {down} from "~/components/base_component.vue";
+import {errorMsg, success} from "./base_component.vue"
+import {down, downName} from "~/components/base_component.vue";
 
 const selectedFile = ref();
 const form = reactive({
@@ -84,13 +86,14 @@ async function submit() {
   console.log(form)
   try {
     let formData = new FormData;
-    formData.append("csr",form.csr)
-    formData.append("pub",form.pub)
+    formData.append("csr", form.csr)
+    formData.append("pub", form.pub)
+    formData.append("id", sessionStorage.getItem("id"))
     const response = await registerIntermediateCert(formData);
     console.log(response)
     if (response.status == 200) {
-      successMsg("success")
-      down(response.data)
+      success()
+      downName(response.data, sessionStorage.getItem("id") + '.pem.crt')
     } else {
       errorMsg(response.data.status_msg)
     }

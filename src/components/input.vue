@@ -1,17 +1,17 @@
 <template>
 
-  <el-form-item label="UserId" >
+  <el-form-item label="ID" >
     <el-input v-model="id"
-              placeholder="Please input UserId"
+              placeholder="请输入ID"
               clearable
               @input="sendId(id)"
     />
   </el-form-item>
-  <el-form-item label="Password">
+  <el-form-item label="密码">
     <el-input
         v-model="password"
         type="password"
-        placeholder="Please input Password"
+        placeholder="请输入密码"
         show-password
         clearable
         @input="sendPassword(password)"

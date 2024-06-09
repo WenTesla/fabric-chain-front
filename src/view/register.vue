@@ -4,6 +4,8 @@
   </el-header>
 
   <div class="register-container">
+    <div class="transparent-box">
+
     <el-form
         :label-position="labelPosition"
         label-width="auto"
@@ -11,19 +13,19 @@
         style="max-width: 400px"
     >
       <Input :send-id="getId" :send-password="getPassword"/>
-      <el-form-item label="Confirm">
+      <el-form-item label="确定密码">
         <el-input
             type="password"
-            placeholder="Please confirm Password"
+            placeholder="请重复输入密码"
             show-password
             clearable
             v-model="confirmValue"
             @blur="checkIsSame"
         />
       </el-form-item>
-      <el-form-item label="Email">
+      <el-form-item label="邮箱">
         <el-input v-model="form.email"
-                  placeholder="Please input your email"
+                  placeholder="请输入邮箱"
                   clearable
         />
       </el-form-item>
@@ -31,7 +33,7 @@
         <el-tooltip
             class="box-item"
             effect="dark"
-            content="upload your public key"
+            content="上传公钥"
             placement="left"
         >
           <el-switch v-model="isChecked" style="margin: auto"/>
@@ -43,9 +45,9 @@
             :auto-upload="false"
             @change="handleFileUpload"
         >
-          <el-button type="primary" @click="submitUpload">Click to upload</el-button>
-          <div class="el-upload__tip">
-            please load your public key
+          <el-button type="primary" @click="submitUpload">点击上传</el-button>
+          <div class="el-upload__tip" style="margin-left: 40px">
+            请上传你的公钥
           </div>
         </el-upload>
 
@@ -53,11 +55,12 @@
 
       <el-form-item>
         <el-button type="primary" @click="handleSubmit" :loading="isLoading" style="margin: auto"
-        >register
+        >注册
         </el-button>
       </el-form-item>
 
     </el-form>
+  </div>
   </div>
 </template>
 
@@ -65,7 +68,7 @@
 
 import {reactive, ref, onMounted} from 'vue'
 import type {FormProps, FormRules, UploadInstance, UploadProps, UploadRawFile, UploadUserFile} from 'element-plus'
-import {RegisterByGenRSA, RegisterData, RegisterWithCert} from "~/api/user";
+import {Register, RegisterByGenRSA, RegisterData, RegisterWithCert} from "~/api/user";
 import {ElMessage, ElMessageBox, genFileId} from 'element-plus'
 import Input from "~/components/input.vue";
 import Menu from "~/components/menu.vue";
@@ -134,8 +137,6 @@ async function handleSwitchOn() {
   formData.append('id', form.id)
   formData.append('password', form.password) // 假设后端字段名为password
   formData.append('email', form.email)
-  // 添加文件
-  // formData.append('publickey', form.publickey)
   formData.append('publickey', selectedFile.value)
 
   try {
@@ -177,9 +178,12 @@ async function handleSwitchOff() {
     const response = await RegisterByGenRSA(formData as RegisterData)
     console.log(response)
     // 处理响应
-    if (response.status == 200) {
-      // 下载文件
-      downName(response.data,form.id+'.txt')
+    if (response.status === 200) {
+      successMsg("系统会自动生成RSA公私密钥，公钥已存入系统，请保存好你的私钥")
+      downName(response.data,form.id+'.key')
+      setTimeout(()=>{
+        console.log("111")
+      },3000)
       router.push("/login")
     } else {
       errorMsg(response.data)
@@ -213,7 +217,7 @@ const errorMsg = (msg) => {
 
 const success = () => {
   ElMessage({
-    message: 'Congrats, this is a success message.',
+    message: 'Success',
     type: 'success',
   })
 }
@@ -247,16 +251,12 @@ const beforeUpload = (rawFile: File) => {
   return true;
 };
 
-function stringToBlob(str, type = 'text/plain;charset=utf-8') {
-  const encoder = new TextEncoder(); // 创建一个 TextEncoder 实例
-  const data = encoder.encode(str); // 将字符串编码为 Uint8Array
-  return new Blob([data], {type}); // 创建一个 Blob 对象
-}
+
 
 const handleFileUpload = (file) => {
   // file 是当前选择的文件对象，fileList 是当前已选择的文件列表
   selectedFile.value = file.raw; // raw 属性包含了原始的 File 对象
-  form.publickey=file.raw
+  form.publickey = file.raw
   console.log(selectedFile.value); // 打印文件对象，可以在这里进行文件内容的读取
   const reader = new FileReader();
   reader.onload = (e) => {
@@ -271,8 +271,23 @@ const handleFileUpload = (file) => {
 
 <style scoped>
 .register-container {
+  background-image: url('https://s2.loli.net/2024/06/09/mgGv2hlHQIte7En.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  min-height: 100vh;
   padding-top: 100px;
   text-align: -webkit-center;
+}
+
+.transparent-box {
+  background-color: rgba(255, 255, 255, 0.8);
+  border: 1px solid black;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  margin: 50px auto;
+  max-width: 500px;
 }
 </style>
 

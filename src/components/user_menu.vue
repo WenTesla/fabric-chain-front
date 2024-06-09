@@ -11,7 +11,7 @@
     <template #extra>
       <div class="flex items-center">
 <!--        <el-button type="primary" class="ml-2" plain @click="open">Detail</el-button>-->
-        <el-button type="primary" class="ml-2" plain @click="open">Update Password</el-button>
+        <el-button type="primary" class="ml-2" plain @click="open">修改密码</el-button>
       </div>
     </template>
   </el-page-header>
